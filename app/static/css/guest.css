@@ -1,0 +1,54 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: Arial, sans-serif; background: #0d1117; color: #e6e6e6; min-height: 100vh; }
+.gold { color: #f5a623; }
+
+.header { background: linear-gradient(135deg, #1a1a2e, #16213e); border-bottom: 3px solid #f5a623;
+          padding: 20px 24px; display: flex; align-items: center; gap: 16px; }
+.header-icon { font-size: 36px; }
+.header-text h1 { font-size: 18px; color: #f5a623; }
+.header-text p { font-size: 13px; color: #aaa; margin-top: 2px; }
+.room-badge { margin-left: auto; background: #f5a623; color: #1a1a2e; padding: 6px 14px;
+              border-radius: 20px; font-weight: bold; font-size: 14px; }
+
+.welcome { background: #16213e; margin: 20px 16px; border-radius: 12px; padding: 20px;
+           border-left: 4px solid #f5a623; }
+.welcome h2 { font-size: 16px; color: #f5a623; margin-bottom: 4px; }
+.welcome p { font-size: 13px; color: #aaa; line-height: 1.5; }
+
+.section-title { font-size: 13px; color: #f5a623; font-weight: bold; text-transform: uppercase;
+                 letter-spacing: 1px; margin: 24px 16px 10px; }
+
+.categories { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 0 16px; }
+.cat-btn { background: #16213e; border: 2px solid #2a2a4a; border-radius: 12px; padding: 14px 8px;
+           text-align: center; cursor: pointer; transition: all 0.2s; }
+.cat-btn:hover { border-color: #f5a623; background: #1e2a4a; }
+.cat-btn.active { border-color: #f5a623; background: #2a1f00; }
+.cat-btn .icon { font-size: 26px; display: block; margin-bottom: 6px; }
+.cat-btn .label { font-size: 11px; color: #ccc; }
+
+.form-area { margin: 20px 16px 16px; }
+.form-area input, .form-area textarea { width: 100%; background: #16213e; border: 2px solid #2a2a4a;
+    border-radius: 10px; color: #e6e6e6; padding: 12px 14px; font-size: 14px; margin-bottom: 12px;
+    outline: none; font-family: Arial, sans-serif; }
+.form-area input:focus, .form-area textarea:focus { border-color: #f5a623; }
+.form-area textarea { height: 100px; resize: none; }
+
+.submit-btn { width: 100%; background: linear-gradient(135deg, #f5a623, #e8941a); color: #1a1a2e;
+              border: none; border-radius: 12px; padding: 16px; font-size: 16px; font-weight: bold;
+              cursor: pointer; }
+.submit-btn:hover { opacity: 0.9; }
+.submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.success-screen { display: none; text-align: center; padding: 60px 24px; }
+.success-screen .big-icon { font-size: 70px; margin-bottom: 16px; }
+.success-screen h2 { color: #f5a623; font-size: 22px; margin-bottom: 10px; }
+.success-screen p { color: #aaa; font-size: 14px; line-height: 1.6; }
+.req-id { display: inline-block; margin-top: 20px; background: #16213e; border: 1px solid #f5a623;
+          color: #f5a623; padding: 8px 20px; border-radius: 20px; font-size: 13px; }
+.new-request-btn { margin-top: 16px; background: transparent; border: 2px solid #f5a623; color: #f5a623;
+                   padding: 10px 24px; border-radius: 20px; font-size: 14px; cursor: pointer; }
+.new-request-btn:hover { background: #f5a623; color: #1a1a2e; }
+
+.error-msg { background: #2d0000; border: 1px solid #ff4444; color: #ff8888; padding: 10px 14px;
+             border-radius: 8px; font-size: 13px; margin-bottom: 12px; display: none; }
+.footer { text-align: center; padding: 30px 16px; color: #666; font-size: 11px; }

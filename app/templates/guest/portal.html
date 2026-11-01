@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room {{ room_id }} - Hoima Buffalo Hotel</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/guest.css') }}">
+</head>
+<body data-room="{{ room_id }}">
+
+<div class="header">
+    <div class="header-icon">🦬</div>
+    <div class="header-text">
+        <h1>Hoima Buffalo Hotel</h1>
+        <p>Your Digital Concierge</p>
+    </div>
+    <div class="room-badge">Room {{ room_id }}</div>
+</div>
+
+<div id="main-form">
+    <div class="welcome">
+        <h2>Welcome to Buffalo Hotel</h2>
+        <p>Need anything? Report a room issue or request a service below. Our team will respond immediately.</p>
+    </div>
+
+    <div class="section-title">What do you need help with?</div>
+    <div class="categories">
+        <div class="cat-btn" data-category="Plumbing"><span class="icon">🔧</span><span class="label">Plumbing</span></div>
+        <div class="cat-btn" data-category="Electrical"><span class="icon">⚡</span><span class="label">Electrical</span></div>
+        <div class="cat-btn" data-category="Cleaning"><span class="icon">🧹</span><span class="label">Cleaning</span></div>
+        <div class="cat-btn" data-category="AC &amp; Heating"><span class="icon">❄️</span><span class="label">AC &amp; Heating</span></div>
+        <div class="cat-btn" data-category="TV &amp; Entertainment"><span class="icon">📺</span><span class="label">TV / WiFi</span></div>
+        <div class="cat-btn" data-category="Room Service"><span class="icon">🍽️</span><span class="label">Room Service</span></div>
+        <div class="cat-btn" data-category="Bedding &amp; Towels"><span class="icon">🛏️</span><span class="label">Bedding</span></div>
+        <div class="cat-btn" data-category="Security"><span class="icon">🔒</span><span class="label">Security</span></div>
+        <div class="cat-btn" data-category="Other"><span class="icon">📝</span><span class="label">Other</span></div>
+    </div>
+
+    <div class="form-area">
+        <input type="text" id="guest-name" placeholder="Your name (optional)" maxlength="80">
+        <textarea id="description" placeholder="Describe your issue or request in detail..." maxlength="500"></textarea>
+        <div class="error-msg" id="error-msg"></div>
+        <button class="submit-btn" id="submit-btn">Send Request to Our Team</button>
+    </div>
+</div>
+
+<div class="success-screen" id="success-screen">
+    <div class="big-icon">✅</div>
+    <h2>Request Received!</h2>
+    <p>Our team has been notified and will<br>attend to your room shortly.<br><br>
+       Thank you for choosing<br><strong class="gold">Hoima Buffalo Hotel</strong>.</p>
+    <div class="req-id" id="req-id-display"></div>
+    <br>
+    <button class="new-request-btn" id="new-request-btn">Submit Another Request</button>
+</div>
+
+<div class="footer">
+    BuffaloOS v1.0 &bull; Hoima Buffalo Hotel &amp; Business Hub<br>
+    For emergencies, call reception: <strong class="gold">ext. 0</strong>
+</div>
+
+<script src="{{ url_for('static', filename='js/guest.js') }}"></script>
+</body>
+</html>

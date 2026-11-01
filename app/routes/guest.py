@@ -1,58 +1,68 @@
-from flask import Blueprint, render_template_string
-from app.models import Room
+from flask import Blueprint, render_template, request, jsonify, abort
+from app import socketio
+from app.models import db, Room, ServiceRequest
 
 guest_bp = Blueprint('guest', __name__, url_prefix='/guest')
 
+# Allowed categories (must match the buttons on the page) and their default priority
+CATEGORY_PRIORITY = {
+    'Plumbing': 'high',
+    'Electrical': 'high',
+    'AC & Heating': 'high',
+    'Security': 'urgent',
+    'Cleaning': 'normal',
+    'TV & Entertainment': 'normal',
+    'Room Service': 'normal',
+    'Bedding & Towels': 'normal',
+    'Other': 'normal',
+}
+
+
 @guest_bp.route('/<int:room_id>')
 def guest_home(room_id):
-    # Temporary — no database lookup yet, just confirm routing works
-    return render_template_string("""
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>BuffaloOS - Room {{ room_id }}</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                background: #1a1a2e;
-                color: white;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                min-height: 100vh;
-                margin: 0;
-            }
-            .card {
-                background: #16213e;
-                border: 2px solid #f5a623;
-                border-radius: 16px;
-                padding: 40px;
-                text-align: center;
-                max-width: 400px;
-            }
-            .emoji { font-size: 60px; margin-bottom: 16px; }
-            h1 { color: #f5a623; margin: 0 0 8px 0; }
-            p { color: #aaa; }
-            .badge {
-                background: #f5a623;
-                color: #1a1a2e;
-                padding: 6px 16px;
-                border-radius: 20px;
-                font-weight: bold;
-                display: inline-block;
-                margin-top: 16px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="card">
-            <div class="emoji">🦬</div>
-            <h1>Hoima Buffalo Hotel</h1>
-            <p>Welcome, Room {{ room_id }} Guest</p>
-            <p>Your digital concierge is loading...</p>
-            <div class="badge">BuffaloOS is ALIVE</div>
-        </div>
-    </body>
-    </html>
-    """, room_id=room_id)
+    room = Room.query.filter_by(room_number=str(room_id)).first()
+    if not room:
+        abort(404)
+    return render_template('guest/portal.html', room_id=room_id)
+
+
+@guest_bp.route('/<int:room_id>/submit', methods=['POST'])
+def submit_request(room_id):
+    room = Room.query.filter_by(room_number=str(room_id)).first()
+    if not room:
+        return jsonify({'success': False, 'error': 'Unknown room.'}), 404
+
+    data = request.get_json(silent=True) or {}
+    category = (data.get('category') or '').strip()
+    description = (data.get('description') or '').strip()[:500]
+    guest_name = (data.get('guest_name') or '').strip()[:80] or f'Room {room_id} Guest'
+
+    if category not in CATEGORY_PRIORITY:
+        return jsonify({'success': False, 'error': 'Please choose a category.'}), 400
+    if len(description) < 5:
+        return jsonify({'success': False, 'error': 'Please add a little more detail.'}), 400
+
+    new_request = ServiceRequest(
+        room_id=room.id,
+        guest_name=guest_name,
+        category=category,
+        description=description,
+        priority=CATEGORY_PRIORITY[category],
+        status='pending',
+    )
+
+    try:
+        db.session.add(new_request)
+        db.session.commit()
+    except Exception:
+        db.session.rollback()
+        return jsonify({'success': False, 'error': 'Could not save your request. Please try again.'}), 500
+
+    # Tell the staff dashboard immediately
+    socketio.emit('new_request', new_request.to_dict(), to='staff')
+
+    return jsonify({
+        'success': True,
+        'request_id': new_request.id,
+        'message': 'Your request has been received.'
+    })
