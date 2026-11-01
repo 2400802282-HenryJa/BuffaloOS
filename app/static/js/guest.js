@@ -49,6 +49,7 @@
                 document.getElementById('main-form').style.display = 'none';
                 document.getElementById('success-screen').style.display = 'block';
                 document.getElementById('req-id-display').textContent = 'Request #' + data.request_id;
+                watchRequest(data.request_id);
             } else {
                 showError(data.error || 'Something went wrong. Please try again.');
                 setSending(false);
@@ -69,4 +70,25 @@
         document.getElementById('success-screen').style.display = 'none';
         hideError();
     });
-})();
+    var socket = null;
+    var myRequestId = null;
+    var statusEl = document.getElementById('status-line');
+    var STATUS_TEXT = {
+        pending: 'Waiting for our team...',
+        in_progress: 'Our team is on it right now.',
+        resolved: 'Resolved. Enjoy your stay!'
+    };
+
+    function watchRequest(id) {
+        myRequestId = id;
+        statusEl.textContent = STATUS_TEXT.pending;
+        statusEl.className = 'status-line';
+        if (socket) return;
+        socket = io();
+        socket.on('connect', function () { socket.emit('join_guest', { room: roomId }); });
+        socket.on('guest_update', function (d) {
+            if (d.id !== myRequestId || !STATUS_TEXT[d.status]) return;
+            statusEl.textContent = STATUS_TEXT[d.status];
+            statusEl.className = 'status-line' + (d.status === 'resolved' ? ' done' : '');
+        });
+    }})();

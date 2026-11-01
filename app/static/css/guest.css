@@ -52,3 +52,5 @@ body { font-family: Arial, sans-serif; background: #0d1117; color: #e6e6e6; min-
 .error-msg { background: #2d0000; border: 1px solid #ff4444; color: #ff8888; padding: 10px 14px;
              border-radius: 8px; font-size: 13px; margin-bottom: 12px; display: none; }
 .footer { text-align: center; padding: 30px 16px; color: #666; font-size: 11px; }
+.status-line { margin-top: 16px; font-size: 15px; color: #f5a623; }
+.status-line.done { color: #5fd68a; font-weight: bold; }

@@ -67,5 +67,5 @@ def update_status(req_id):
         return jsonify({'success': False, 'error': 'Could not save'}), 500
 
     payload = req.to_dict()
-    socketio.emit('request_updated', payload, to='staff')
-    return jsonify({'success': True, 'request': payload})
+    socketio.emit('guest_update', {'id': req.id, 'status': req.status},
+                  to=f"room_{payload['room_number']}")

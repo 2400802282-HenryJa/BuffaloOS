@@ -50,7 +50,7 @@
     <p>Our team has been notified and will<br>attend to your room shortly.<br><br>
        Thank you for choosing<br><strong class="gold">Hoima Buffalo Hotel</strong>.</p>
     <div class="req-id" id="req-id-display"></div>
-    <br>
+    <div class="status-line" id="status-line"></div>    <br>
     <button class="new-request-btn" id="new-request-btn">Submit Another Request</button>
 </div>
 
@@ -58,7 +58,7 @@
     BuffaloOS v1.0 &bull; Hoima Buffalo Hotel &amp; Business Hub<br>
     For emergencies, call reception: <strong class="gold">ext. 0</strong>
 </div>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.min.js"></script>
 <script src="{{ url_for('static', filename='js/guest.js') }}"></script>
 </body>
 </html>

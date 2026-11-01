@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, request, jsonify, abort
+from flask_socketio import join_room
 from app import socketio
 from app.models import db, Room, ServiceRequest
 
@@ -66,3 +67,8 @@ def submit_request(room_id):
         'request_id': new_request.id,
         'message': 'Your request has been received.'
     })
+@socketio.on('join_guest')
+def on_join_guest(data):
+    room_number = str((data or {}).get('room', ''))
+    if Room.query.filter_by(room_number=room_number).first():
+        join_room(f'room_{room_number}')
