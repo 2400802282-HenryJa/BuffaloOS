@@ -55,13 +55,15 @@ class ServiceRequest(db.Model):
     def to_dict(self):
         return {
             'id': self.id,
-            'room_id': self.room_id,
+            'room_number': self.room.room_number if self.room else None,
             'guest_name': self.guest_name,
             'category': self.category,
             'description': self.description,
             'priority': self.priority,
             'status': self.status,
-            'submitted_at': self.submitted_at.strftime('%Y-%m-%d %H:%M'),
+            'submitted_at': self.submitted_at.isoformat() + 'Z' if self.submitted_at else None,
+            'resolved_at': self.resolved_at.isoformat() + 'Z' if self.resolved_at else None,
+            'resolution_note': self.resolution_note,
         }
 
 class Notification(db.Model):

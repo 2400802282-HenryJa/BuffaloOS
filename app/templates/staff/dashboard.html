@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buffalo Staff</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/staff.css') }}">
+</head>
+<body>
+
+<div class="header">
+    <div>
+        <h1>Hoima Buffalo Hotel: Staff</h1>
+        <p>Requests appear here live</p>
+    </div>
+    <div class="live" id="live">Connecting...</div>
+</div>
+
+<div class="wrap">
+    <div class="section-title">Open requests (<span id="open-count">0</span>)</div>
+    <div id="open-list"></div>
+
+    <div class="section-title">Recently resolved</div>
+    <div id="done-list"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.min.js"></script>
+<script src="{{ url_for('static', filename='js/staff.js') }}"></script>
+</body>
+</html>
